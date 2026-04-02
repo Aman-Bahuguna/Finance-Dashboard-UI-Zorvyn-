@@ -125,7 +125,7 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
 
   return (
     <>
-      <div className={`glass p-6 rounded-2xl flex flex-col relative overflow-hidden ${limit ? 'h-[540px]' : 'flex-1 min-h-[750px]'}`}>
+      <div className={`glass p-6 rounded-2xl flex flex-col relative ${limit ? 'h-[540px]' : 'flex-1 min-h-[750px]'}`}>
         <div className="flex flex-col lg:flex-row gap-8 flex-1 min-h-0">
           
           {/* Main List Container */}
@@ -158,7 +158,7 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                   />
                 </div>
                 
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0 no-scrollbar">
+                <div className="flex flex-wrap items-center gap-2 pb-1 lg:pb-0">
                   <Dropdown 
                     value={filter}
                     options={typeOptions}
