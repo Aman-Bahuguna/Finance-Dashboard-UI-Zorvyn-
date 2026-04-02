@@ -9,7 +9,8 @@ const CategoryChart = () => {
   const [timePeriod, setTimePeriod] = useState('This Month');
   
   // Compute total and categorized expenses
-  const expenseTransactions = transactions.filter(t => t.type === 'expense');
+  const validTransactions = transactions.filter(t => t.status !== 'Failed');
+  const expenseTransactions = validTransactions.filter(t => t.type === 'expense');
   const totalSpent = expenseTransactions.reduce((acc, curr) => acc + curr.amount, 0);
 
   const rawData = expenseTransactions.reduce((acc, curr) => {
