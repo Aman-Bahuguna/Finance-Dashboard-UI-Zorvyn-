@@ -24,20 +24,17 @@ const SummaryCards = () => {
   const prevMonthTransactions = filterByMonth(transactions, prevMonth, prevYear);
 
   const calculateTotals = (data) => {
-    // Only count transactions that haven't failed
-    const validData = data.filter(t => t.status !== 'Failed');
-    const inc = validData.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
-    const exp = validData.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
+    const inc = data.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
+    const exp = data.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
     return { inc, exp, bal: inc - exp };
   };
 
   const current = calculateTotals(currentMonthTransactions);
   const prev = calculateTotals(prevMonthTransactions);
 
-  // Overall Totals for display - Filtering logic moved here too
-  const validTransactions = transactions.filter(t => t.status !== 'Failed');
-  const totalIncome = validTransactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
-  const totalExpenses = validTransactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
+  // Overall Totals for display
+  const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
+  const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
   const totalBalance = totalIncome - totalExpenses;
 
   const getPercentageChange = (curr, prevVal) => {

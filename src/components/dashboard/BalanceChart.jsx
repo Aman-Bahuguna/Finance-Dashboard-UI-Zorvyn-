@@ -13,10 +13,8 @@ const BalanceChart = () => {
   
   // Calculate running balance per day for the chart
   let chartData = [];
-  const validTransactions = transactions.filter(t => t.status !== 'Failed');
-  
-  if (validTransactions.length > 0) {
-    const sorted = [...validTransactions].sort((a,b) => new Date(a.date) - new Date(b.date));
+  if (transactions.length > 0) {
+    const sorted = [...transactions].sort((a,b) => new Date(a.date) - new Date(b.date));
     let currentBalance = 0;
     const balanceByDate = {};
     

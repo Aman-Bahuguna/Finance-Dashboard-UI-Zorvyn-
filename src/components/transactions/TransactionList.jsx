@@ -14,7 +14,6 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
   const dispatch = useDispatch();
 
   const [filter, setFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('date-desc');
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,12 +26,11 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
   // Reset to first page when filtering
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [filter, statusFilter, searchTerm, sortBy]);
+  }, [filter, searchTerm, sortBy]);
 
   // Filtering Logic
   let filteredData = transactions.filter(t => {
     if (filter !== 'All' && filter.toLowerCase() !== t.type) return false;
-    if (statusFilter !== 'All' && statusFilter !== (t.status || 'Completed')) return false;
     if (searchTerm && !t.category.toLowerCase().includes(searchTerm.toLowerCase())) return false;
     return true;
   });
@@ -106,13 +104,6 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
     { value: 'Expense', label: 'Expense' }
   ];
 
-  const statusFilterOptions = [
-    { value: 'All', label: 'All Status' },
-    { value: 'Completed', label: 'Completed' },
-    { value: 'Pending', label: 'Pending' },
-    { value: 'Failed', label: 'Failed' }
-  ];
-
   const sortOptions = [
     { value: 'date-desc', label: 'Newest First' },
     { value: 'date-asc', label: 'Oldest First' },
@@ -134,7 +125,7 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
 
   return (
     <>
-      <div className={`glass p-6 rounded-2xl flex flex-col relative ${limit ? 'h-[500px]' : 'flex-1 min-h-[750px]'}`}>
+      <div className={`glass p-6 rounded-2xl flex flex-col relative ${limit ? 'h-[540px]' : 'flex-1 min-h-[750px]'}`}>
         <div className="flex flex-col lg:flex-row gap-8 flex-1 min-h-0">
           
           {/* Main List Container */}
@@ -172,13 +163,6 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                     value={filter}
                     options={typeOptions}
                     onChange={(val) => setFilter(val)}
-                    className="min-w-[120px]"
-                    buttonClassName="!bg-white/5 !border-white/10 !rounded-2xl !h-[44px]"
-                  />
-                  <Dropdown 
-                    value={statusFilter}
-                    options={statusFilterOptions}
-                    onChange={(val) => setStatusFilter(val)}
                     className="min-w-[120px]"
                     buttonClassName="!bg-white/5 !border-white/10 !rounded-2xl !h-[44px]"
                   />
