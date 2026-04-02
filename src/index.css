@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fdfdfd;
+    --surface: #ffffff;
+    --primary: #5b21b6;
+    --secondary: #2dd4bf;
+    --accent: #8b5cf6;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: #f1f5f9;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+  }
+
+  .dark {
+    --background: #000000;
+    --surface: #141417;
+    --primary: #a855f7;
+    --secondary: #22d3ee;
+    --accent: #f472b6;
+    --text: #ffffff;
+    --text-muted: #94949e;
+    --border: #27272a;
+    --success: #22c55e;
+    --warning: #eab308;
+    --error: #ef4444;
+  }
+
+  body {
+    @apply bg-background text-text antialiased overflow-x-hidden;
+    width: 100vw;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Add smooth transition to all themed elements */
+  .glass, 
+  button, 
+  input, 
+  header, 
+  nav, 
+  aside, 
+  main,
+  div,
+  span,
+  p,
+  h1, h2, h3, h4, h5, h6 {
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: white;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-black/5 shadow-sm;
+  }
+  
+  .dark .glass {
+    background-color: rgba(20, 20, 23, 0.4);
+    @apply backdrop-blur-3xl border border-white/10 shadow-none;
+  }
+
+  /* Scrollbar override */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+  }
+
+  /* View Transition API styles */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+}
