@@ -8,6 +8,7 @@ import BalanceChart from '../components/dashboard/BalanceChart';
 import CategoryChart from '../components/dashboard/CategoryChart';
 import TransactionList from '../components/transactions/TransactionList';
 import InsightsPanel from '../components/insights/InsightsPanel';
+import ComparisonChart from '../components/dashboard/ComparisonChart';
 
 const Dashboard = () => {
   const containerRef = useRef(null);
@@ -74,9 +75,12 @@ const Dashboard = () => {
         );
       case 'Analytics':
         return (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <CategoryChart />
-            <InsightsPanel />
+          <div className="flex flex-col gap-8">
+            <ComparisonChart />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <CategoryChart />
+              <InsightsPanel />
+            </div>
           </div>
         );
       case 'Settings':

@@ -20,7 +20,7 @@ const ComparisonChart = () => {
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-                <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl p-4 shadow-2xl">
+                <div className="bg-background/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl">
                     <p className="text-[10px] text-text-muted font-bold uppercase tracking-widest mb-3">{label}</p>
                     <div className="space-y-2">
                         <div className="flex justify-between items-center gap-6">
@@ -39,22 +39,22 @@ const ComparisonChart = () => {
     };
 
     return (
-        <div className="glass p-6 rounded-[2.5rem] h-full flex flex-col relative overflow-hidden">
+        <div className="glass p-6 rounded-[2.5rem] h-full flex flex-col relative overflow-hidden min-h-[350px]">
             <h3 className="text-lg font-display font-semibold text-text mb-6">Income vs Expenses</h3>
-            <div className="flex-1 min-h-[300px]">
+            <div className="flex-1 w-full h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={sortedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.3} />
+                    <BarChart data={sortedData} margin={{ top: 20, right: 30, left: 10, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--white)" opacity={0.05} />
                         <XAxis 
                            dataKey="name" 
-                           stroke="var(--text-muted)" 
+                           stroke="rgba(255,255,255,0.4)" 
                            fontSize={11} 
                            tickLine={false} 
                            axisLine={false} 
                            tickMargin={12}
                         />
                         <YAxis 
-                           stroke="var(--text-muted)" 
+                           stroke="rgba(255,255,255,0.4)" 
                            fontSize={11} 
                            tickLine={false} 
                            axisLine={false} 
