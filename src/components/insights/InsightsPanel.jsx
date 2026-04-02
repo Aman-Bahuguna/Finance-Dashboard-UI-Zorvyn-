@@ -76,7 +76,7 @@ const InsightsPanel = () => {
 const InsightCard = ({ icon, title, desc, color }) => (
   <motion.div 
     whileHover={{ x: 5 }}
-    className="flex gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-default"
+    className="flex gap-4 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-default"
   >
     <div className={`w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center ${color}`}>
       <i className={`pi ${icon}`}></i>

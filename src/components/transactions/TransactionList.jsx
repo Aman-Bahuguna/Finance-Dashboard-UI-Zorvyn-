@@ -7,6 +7,7 @@ import { addTransaction, deleteTransaction, editTransaction } from '../../redux/
 import Dropdown from '../ui/Dropdown';
 import DatePicker from '../ui/DatePicker';
 import TransactionInsights from './TransactionInsights';
+import { convertToCSV, downloadFile } from '../../utils/exportHelpers';
 
 const TransactionList = ({ showInsights = false, limit = null }) => {
   const transactions = useSelector((state) => state.transactions.data);
@@ -123,6 +124,21 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
     { value: 'Bank Transfer', label: 'Bank Transfer' }
   ];
 
+  const exportOptions = [
+    { value: 'csv', label: 'Export CSV' },
+    { value: 'json', label: 'Export JSON' }
+  ];
+
+  const handleExport = (type) => {
+    if (type === 'csv') {
+      const csvContent = convertToCSV(transactions);
+      downloadFile(csvContent, `transactions_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv;charset=utf-8;');
+    } else if (type === 'json') {
+      const jsonContent = JSON.stringify(transactions, null, 2);
+      downloadFile(jsonContent, `transactions_${new Date().toISOString().split('T')[0]}.json`, 'application/json;charset=utf-8;');
+    }
+  };
+
   return (
     <>
       <div className={`glass p-6 rounded-2xl flex flex-col relative ${limit ? 'h-[540px]' : 'flex-1 min-h-[750px]'}`}>
@@ -154,7 +170,7 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                     placeholder="Search history..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="bg-white/5 border border-white/10 text-text text-sm rounded-2xl pl-10 pr-4 py-3 focus:outline-none focus:border-primary/40 focus:bg-white/[0.08] w-full transition-all"
+                    className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-text text-sm rounded-2xl pl-10 pr-4 py-3 focus:outline-none focus:border-primary/40 focus:bg-slate-100 dark:focus:bg-white/[0.08] w-full transition-all"
                   />
                 </div>
                 
@@ -173,14 +189,26 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                     className="min-w-[140px]"
                     buttonClassName="!bg-white/5 !border-white/10 !rounded-2xl !h-[44px]"
                   />
-                  {role === 'admin' && (
-                    <button 
-                      onClick={() => handleOpenModal()}
-                      className="hidden lg:flex bg-primary hover:bg-primary/90 text-white rounded-2xl px-6 h-[44px] items-center gap-2 text-sm font-bold transition-all active:scale-95 shadow-lg shadow-primary/20"
-                    >
-                      <i className="pi pi-plus text-[10px]"></i> ADD NEW
-                    </button>
-                  )}
+                  
+                  <div className="flex items-center gap-2">
+                    <Dropdown 
+                      placeholder={<span className="flex items-center"><i className="pi pi-download text-[10px] mr-2"></i> Export</span>}
+                      value=""
+                      options={exportOptions}
+                      onChange={handleExport}
+                      className="min-w-[130px]"
+                      buttonClassName="!bg-white/5 !border-white/10 !rounded-2xl !h-[44px] !text-text-muted hover:!text-text"
+                    />
+
+                    {role === 'admin' && (
+                      <button 
+                        onClick={() => handleOpenModal()}
+                        className="hidden lg:flex bg-primary hover:bg-primary/90 text-white rounded-2xl px-6 h-[44px] items-center gap-2 text-sm font-bold transition-all active:scale-95 shadow-lg shadow-primary/20"
+                      >
+                        <i className="pi pi-plus text-[10px]"></i> ADD NEW
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -214,7 +242,7 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, scale: 0.95 }}
-                              className="border-b border-border/10 last:border-0 hover:bg-white/[0.03] transition-colors group"
+                              className="border-b border-border/10 last:border-0 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors group"
                             >
                               <td className="py-4 px-2">
                                 <div className="flex items-center gap-4">
@@ -246,14 +274,14 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                                   <div className="flex items-center justify-end gap-2">
                                     <button 
                                       onClick={() => handleOpenModal(t)}
-                                      className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 text-text-muted hover:bg-primary/10 hover:text-primary transition-all active:scale-90"
+                                      className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-white/5 text-text-muted hover:bg-primary/10 hover:text-primary transition-all active:scale-90"
                                       title="Edit"
                                     >
                                       <i className="pi pi-pencil text-xs"></i>
                                     </button>
                                     <button 
                                       onClick={() => handleDelete(t.id)}
-                                      className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 text-text-muted hover:bg-error/10 hover:text-error transition-all active:scale-90"
+                                      className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-white/5 text-text-muted hover:bg-error/10 hover:text-error transition-all active:scale-90"
                                       title="Delete"
                                     >
                                       <i className="pi pi-trash text-xs"></i>
@@ -292,8 +320,8 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                              <div>
                                <div className="font-bold text-text text-[15px] leading-tight mb-1">{t.category}</div>
                                <div className="flex items-center gap-2">
-                                 <span className="text-[10px] text-text-muted font-medium bg-white/5 px-2 py-0.5 rounded-full">{t.date}</span>
-                                 <span className="text-[10px] text-text-muted font-medium bg-white/5 px-2 py-0.5 rounded-full">{t.paymentMethod}</span>
+                                 <span className="text-[10px] text-text-muted font-medium bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-full">{t.date}</span>
+                                 <span className="text-[10px] text-text-muted font-medium bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-full">{t.paymentMethod}</span>
                                </div>
                              </div>
                            </div>
@@ -315,13 +343,13 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                            <div className="flex gap-2 mt-4 relative z-10">
                              <button 
                                onClick={() => handleOpenModal(t)}
-                               className="flex-1 py-3 rounded-2xl bg-white/5 text-text hover:bg-primary/20 hover:text-primary text-xs font-bold transition-all flex items-center justify-center gap-2 border border-white/5"
+                               className="flex-1 py-3 rounded-2xl bg-slate-50 dark:bg-white/5 text-text hover:bg-primary/20 hover:text-primary text-xs font-bold transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-white/5"
                              >
                                <i className="pi pi-pencil text-[10px]"></i> Edit Details
                              </button>
                              <button 
                                onClick={() => handleDelete(t.id)}
-                               className="w-12 h-[46px] rounded-2xl bg-white/5 text-error/60 hover:bg-error/20 hover:text-error transition-all flex items-center justify-center border border-white/5"
+                               className="w-12 h-[46px] rounded-2xl bg-slate-50 dark:bg-white/5 text-error/60 hover:bg-error/20 hover:text-error transition-all flex items-center justify-center border border-slate-200 dark:border-white/5"
                              >
                                <i className="pi pi-trash"></i>
                              </button>
@@ -420,14 +448,14 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                 <label className="text-[11px] font-bold text-text-muted uppercase tracking-widest px-1">Category Name</label>
                 <div className="relative group">
                   <i className="pi pi-tag absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-sm group-focus-within:text-primary transition-colors"></i>
-                  <input type="text" placeholder="e.g. D-Mart" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3 outline-none focus:border-primary/50 focus:bg-white/10 text-text transition-all font-medium" />
+                  <input type="text" placeholder="e.g. D-Mart" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl pl-11 pr-4 py-3 outline-none focus:border-primary/50 focus:bg-slate-100 dark:focus:bg-white/10 text-text transition-all font-medium" />
                 </div>
               </div>
               <div className="space-y-1.5">
                 <label className="text-[11px] font-bold text-text-muted uppercase tracking-widest px-1">Amount (₹)</label>
                 <div className="relative group">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted font-bold text-sm group-focus-within:text-primary transition-colors">₹</span>
-                  <input type="number" placeholder="5000" value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl pl-9 pr-4 py-3 outline-none focus:border-primary/50 focus:bg-white/10 text-text transition-all font-display text-lg font-bold" />
+                  <input type="number" placeholder="5000" value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl pl-9 pr-4 py-3 outline-none focus:border-primary/50 focus:bg-slate-100 dark:focus:bg-white/10 text-text transition-all font-display text-lg font-bold" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -472,8 +500,8 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                   />
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 pt-6 border-t border-white/10">
-                <button onClick={() => setIsModalOpen(false)} className="order-2 sm:order-1 flex-1 sm:flex-none px-6 py-3 text-text-muted hover:text-text hover:bg-white/5 rounded-2xl transition-all font-bold text-xs">DISCARD</button>
+              <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 pt-6 border-t border-slate-200 dark:border-white/10">
+                <button onClick={() => setIsModalOpen(false)} className="order-2 sm:order-1 flex-1 sm:flex-none px-6 py-3 text-text-muted hover:text-text hover:bg-slate-100 dark:hover:bg-white/5 rounded-2xl transition-all font-bold text-xs">DISCARD</button>
                 <button onClick={handleSave} className="order-1 sm:order-2 flex-1 sm:flex-none bg-primary hover:bg-primary/90 text-white rounded-2xl px-8 py-3 shadow-lg shadow-primary/30 transition-all active:scale-95 font-bold text-xs uppercase tracking-widest">Save Details</button>
               </div>
             </div>

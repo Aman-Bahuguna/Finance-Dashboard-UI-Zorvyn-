@@ -112,7 +112,7 @@ const Card = ({ title, amount, icon, color, percentage, delay }) => {
         <span className="text-3xl font-display font-bold text-text">
           ₹{amount.toLocaleString('en-IN')}
         </span>
-        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-lg bg-white/5 flex items-center gap-1 ${trendColor}`}>
+        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center gap-1 ${trendColor}`}>
           <i className={`pi ${isPositive ? 'pi-arrow-up' : 'pi-arrow-down'} text-[8px]`}></i>
           {absPercentage}%
         </span>
