@@ -134,7 +134,7 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
 
   return (
     <>
-      <div className={`glass p-6 rounded-2xl flex flex-col relative ${limit ? 'h-[540px]' : 'flex-1 min-h-[750px]'}`}>
+      <div className={`glass p-6 rounded-2xl flex flex-col relative ${limit ? 'h-[500px]' : 'flex-1 min-h-[750px]'}`}>
         <div className="flex flex-col lg:flex-row gap-8 flex-1 min-h-0">
           
           {/* Main List Container */}

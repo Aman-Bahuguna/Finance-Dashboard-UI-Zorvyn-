@@ -104,7 +104,7 @@ const Dashboard = () => {
             </div>
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8 mt-6 lg:mt-8">
               <div className="xl:col-span-2 order-4 xl:order-3">
-                <TransactionList showInsights={false} limit={5} />
+                <TransactionList showInsights={false} limit={4} />
               </div>
               <div className="order-3 xl:order-4">
                 <InsightsPanel />
