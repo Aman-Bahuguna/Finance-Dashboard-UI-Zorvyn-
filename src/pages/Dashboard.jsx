@@ -8,6 +8,8 @@ import BalanceChart from '../components/dashboard/BalanceChart';
 import CategoryChart from '../components/dashboard/CategoryChart';
 import TransactionList from '../components/transactions/TransactionList';
 import InsightsPanel from '../components/insights/InsightsPanel';
+import BudgetTracker from '../components/dashboard/BudgetTracker';
+import ComparisonChart from '../components/dashboard/ComparisonChart';
 
 const Dashboard = () => {
   const containerRef = useRef(null);
@@ -74,9 +76,38 @@ const Dashboard = () => {
         );
       case 'Analytics':
         return (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <CategoryChart />
-            <InsightsPanel />
+          <div className="flex flex-col gap-8">
+            {/* Top Analytics KPI Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+               <div className="glass p-5 rounded-3xl border border-white/5 flex flex-col items-center text-center">
+                  <span className="text-[10px] text-text-muted font-bold tracking-widest uppercase mb-1">Average Monthly Spend</span>
+                  <span className="text-xl font-display font-bold text-text tracking-tight">₹42,300</span>
+               </div>
+               <div className="glass p-5 rounded-3xl border border-white/5 flex flex-col items-center text-center">
+                  <span className="text-[10px] text-text-muted font-bold tracking-widest uppercase mb-1">Total Savings Rate</span>
+                  <span className="text-xl font-display font-bold text-success tracking-tight">24.5%</span>
+               </div>
+               <div className="glass p-5 rounded-3xl border border-white/5 flex flex-col items-center text-center">
+                  <span className="text-[10px] text-text-muted font-bold tracking-widest uppercase mb-1">Net Flow Margin</span>
+                  <span className="text-xl font-display font-bold text-primary tracking-tight">+₹12,400</span>
+               </div>
+            </div>
+
+            {/* Main Analytical Charts */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+              <div className="xl:col-span-2">
+                <ComparisonChart />
+              </div>
+              <div className="xl:col-span-1">
+                <CategoryChart />
+              </div>
+            </div>
+
+            {/* Deeper Insights & Budgeting */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <InsightsPanel />
+              <BudgetTracker />
+            </div>
           </div>
         );
       case 'Settings':
