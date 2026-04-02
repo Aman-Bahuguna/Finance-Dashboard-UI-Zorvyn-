@@ -76,12 +76,21 @@
   }
 
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-black/5 shadow-sm;
+    @apply bg-white/5 backdrop-blur-xl border border-black/5 shadow-sm transition-all;
   }
   
   .dark .glass {
     background-color: rgba(20, 20, 23, 0.4);
     @apply backdrop-blur-3xl border border-white/10 shadow-none;
+  }
+
+  .glass-premium {
+    @apply bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl transition-all duration-300;
+  }
+
+  .dark .glass-premium {
+    background-color: rgba(20, 20, 23, 0.7);
+    @apply backdrop-blur-[40px] border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)];
   }
 
   /* Scrollbar override */
