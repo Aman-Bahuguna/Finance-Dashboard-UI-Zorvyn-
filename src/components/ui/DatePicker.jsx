@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const DatePicker = ({ value, onChange, label }) => {
+const DatePicker = ({ value, onChange, label, className = "" }) => {
+
   const [isOpen, setIsOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date(value || new Date()));
   const containerRef = useRef(null);
@@ -50,12 +51,15 @@ const DatePicker = ({ value, onChange, label }) => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-white/5 border border-border/70 rounded-xl px-3 py-2.5 outline-none focus:border-primary focus:bg-white/10 text-text transition-all text-sm font-mono flex items-center justify-between group"
+        className={`w-full text-text transition-all text-sm font-mono flex items-center justify-between group overflow-hidden ${className || 'bg-white/5 border border-border/70 rounded-xl px-3 py-2.5 outline-none focus:border-primary focus:bg-white/10'}`}
       >
-        <span className={!value ? 'text-text-muted' : ''}>
-          {value ? new Date(value).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Select Date'}
-        </span>
-        <i className={`pi pi-calendar text-sm group-hover:text-primary transition-colors ${isOpen ? 'text-primary' : 'text-text-muted'}`}></i>
+        <div className="flex items-center gap-2 truncate">
+          <i className={`pi pi-calendar text-sm group-hover:text-primary transition-colors ${isOpen ? 'text-primary' : 'text-text-muted'}`}></i>
+          <span className={!value ? 'text-text-muted' : 'font-bold'}>
+            {value ? new Date(value).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Select Date'}
+          </span>
+        </div>
+        <i className={`pi pi-chevron-down text-[10px] transition-transform duration-300 ${isOpen ? 'rotate-180 text-primary' : 'text-text-muted'}`}></i>
       </button>
 
       <AnimatePresence>
@@ -64,7 +68,7 @@ const DatePicker = ({ value, onChange, label }) => {
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute top-full left-0 mt-2 z-[60] glass p-4 rounded-2xl shadow-2xl border border-white/10 w-72 backdrop-blur-xl"
+            className="absolute top-full right-0 sm:left-0 mt-2 z-[60] glass-premium p-4 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 w-[calc(100vw-3rem)] max-w-[300px] sm:w-[320px] backdrop-blur-3xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
