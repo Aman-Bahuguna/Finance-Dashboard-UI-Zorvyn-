@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Dropdown = ({ value, options, onChange, label, className = '' }) => {
+const Dropdown = ({ value, options, onChange, label, className = '', buttonClassName = '' }) => {
+
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -27,7 +28,7 @@ const Dropdown = ({ value, options, onChange, label, className = '' }) => {
             e.stopPropagation();
             setIsOpen(!isOpen);
           }}
-          className="flex items-center justify-between gap-3 bg-white/5 hover:bg-white/10 border border-border/50 rounded-xl px-4 py-2 text-sm text-text font-medium transition-all min-w-[140px] focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className={`flex items-center justify-between gap-3 bg-white/5 hover:bg-white/10 border border-border/50 rounded-xl px-4 py-2 text-sm text-text font-medium transition-all min-w-[140px] focus:outline-none focus:ring-2 focus:ring-primary/50 ${buttonClassName}`}
         >
           <span>{selectedOption.label}</span>
           <i className={`pi pi-chevron-down text-xs transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}></i>

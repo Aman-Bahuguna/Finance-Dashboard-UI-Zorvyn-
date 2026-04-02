@@ -163,13 +163,15 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                     value={filter}
                     options={typeOptions}
                     onChange={(val) => setFilter(val)}
-                    className="min-w-[120px] [&_button]:bg-white/5 [&_button]:border-white/10 [&_button]:rounded-2xl [&_button]:h-[44px]"
+                    className="min-w-[120px]"
+                    buttonClassName="!bg-white/5 !border-white/10 !rounded-2xl !h-[44px]"
                   />
                   <Dropdown 
                     value={sortBy}
                     options={sortOptions}
                     onChange={(val) => setSortBy(val)}
-                    className="min-w-[140px] [&_button]:bg-white/5 [&_button]:border-white/10 [&_button]:rounded-2xl [&_button]:h-[44px]"
+                    className="min-w-[140px]"
+                    buttonClassName="!bg-white/5 !border-white/10 !rounded-2xl !h-[44px]"
                   />
                   {role === 'admin' && (
                     <button 
@@ -435,7 +437,8 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                     value={formData.type}
                     options={editTypeOptions}
                     onChange={(val) => setFormData({...formData, type: val})}
-                    className="w-full [&_button]:w-full [&_button]:rounded-2xl [&_button]:h-[50px] [&_button]:bg-white/5 [&_button]:border-white/10"
+                    className="w-full"
+                    buttonClassName="!w-full !rounded-2xl !h-[50px] !bg-white/5 !border-white/10"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -444,7 +447,8 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                     value={formData.paymentMethod}
                     options={methodOptions}
                     onChange={(val) => setFormData({...formData, paymentMethod: val})}
-                    className="w-full [&_button]:w-full [&_button]:rounded-2xl [&_button]:h-[50px] [&_button]:bg-white/5 [&_button]:border-white/10"
+                    className="w-full"
+                    buttonClassName="!w-full !rounded-2xl !h-[50px] !bg-white/5 !border-white/10"
                   />
                 </div>
               </div>
@@ -455,7 +459,8 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                     value={formData.status}
                     options={statusOptions}
                     onChange={(val) => setFormData({...formData, status: val})}
-                    className="w-full [&_button]:w-full [&_button]:rounded-2xl [&_button]:h-[50px] [&_button]:bg-white/5 [&_button]:border-white/10"
+                    className="w-full"
+                    buttonClassName="!w-full !rounded-2xl !h-[50px] !bg-white/5 !border-white/10"
                   />
                 </div>
                 <div className="space-y-1.5">
