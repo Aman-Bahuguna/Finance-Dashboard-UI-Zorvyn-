@@ -25,13 +25,15 @@ const Dashboard = () => {
   }, [status, dispatch]);
 
   useEffect(() => {
-    if (status === 'succeeded' && containerRef.current) {
-      const elements = containerRef.current.children;
-      gsap.fromTo(
-        elements, 
-        { y: 50, opacity: 0, rotateX: -10 },
-        { y: 0, opacity: 1, rotateX: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.2 }
-      );
+    if (status === 'succeeded' && containerRef.current && activeTab === 'Dashboard') {
+      const elements = containerRef.current.querySelectorAll('.grid > div');
+      if (elements.length > 0) {
+        gsap.fromTo(
+          elements, 
+          { y: 50, opacity: 0, rotateX: -10 },
+          { y: 0, opacity: 1, rotateX: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.2 }
+        );
+      }
     }
   }, [status, activeTab]);
 

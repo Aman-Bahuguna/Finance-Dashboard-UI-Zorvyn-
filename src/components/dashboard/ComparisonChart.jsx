@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
@@ -6,20 +6,22 @@ const ComparisonChart = () => {
     const transactions = useSelector((state) => state.transactions.data);
 
     // Group by month
-    const monthlyData = transactions.reduce((acc, t) => {
-        const date = new Date(t.date);
-        const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
-        if (!acc[monthYear]) acc[monthYear] = { name: monthYear, Income: 0, Expenses: 0 };
-        if (t.type === 'income') acc[monthYear].Income += t.amount;
-        else acc[monthYear].Expenses += t.amount;
-        return acc;
-    }, {});
+    const sortedData = useMemo(() => {
+        const monthlyData = transactions.reduce((acc, t) => {
+            const date = new Date(t.date);
+            const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+            if (!acc[monthYear]) acc[monthYear] = { name: monthYear, Income: 0, Expenses: 0 };
+            if (t.type === 'income') acc[monthYear].Income += t.amount;
+            else acc[monthYear].Expenses += t.amount;
+            return acc;
+        }, {});
 
-    const sortedData = Object.values(monthlyData).sort((a, b) => {
-        const [aMonth, aYear] = a.name.split(' ');
-        const [bMonth, bYear] = b.name.split(' ');
-        return new Date(`${aMonth} 1, ${aYear}`) - new Date(`${bMonth} 1, ${bYear}`);
-    }).slice(-6);
+        return Object.values(monthlyData).sort((a, b) => {
+            const [aMonth, aYear] = a.name.split(' ');
+            const [bMonth, bYear] = b.name.split(' ');
+            return new Date(`${aMonth} 1, ${aYear}`) - new Date(`${bMonth} 1, ${bYear}`);
+        }).slice(-6);
+    }, [transactions]);
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -43,8 +45,13 @@ const ComparisonChart = () => {
     };
 
     return (
-        <div className="glass p-6 rounded-[2.5rem] flex flex-col relative overflow-hidden min-h-[420px] w-full">
-            <h3 className="text-lg font-display font-semibold text-text mb-8">Income vs Expenses</h3>
+        <div className="glass p-6 rounded-[2.5rem] flex flex-col relative overflow-hidden min-h-[420px] w-full group">
+            <div className="flex items-center gap-3 mb-8">
+                <div className="p-2 bg-primary/10 rounded-xl text-primary flex items-center justify-center shadow-lg shadow-primary/5">
+                    <i className="pi pi-chart-bar text-base"></i>
+                </div>
+                <h3 className="text-base font-display font-bold text-text tracking-tight">Income vs Expenses</h3>
+            </div>
             <div className="w-full h-[300px]">
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={sortedData.length > 0 ? sortedData : [{name: 'No Data', Income: 0, Expenses: 0}]} margin={{ top: 0, right: 10, left: -20, bottom: 0 }}>

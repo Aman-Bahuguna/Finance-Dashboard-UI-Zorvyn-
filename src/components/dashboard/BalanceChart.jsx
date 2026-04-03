@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { 
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, 
@@ -12,26 +12,29 @@ const BalanceChart = () => {
   const [chartType, setChartType] = useState('area');
   
   // Calculate running balance per day for the chart
-  let chartData = [];
-  if (transactions.length > 0) {
-    const sorted = [...transactions].sort((a,b) => new Date(a.date) - new Date(b.date));
-    let currentBalance = 0;
-    const balanceByDate = {};
-    
-    sorted.forEach(t => {
-      if (t.type === 'income') currentBalance += t.amount;
-      else currentBalance -= t.amount;
+  const chartData = useMemo(() => {
+    let data = [];
+    if (transactions.length > 0) {
+      const sorted = [...transactions].sort((a,b) => new Date(a.date) - new Date(b.date));
+      let currentBalance = 0;
+      const balanceByDate = {};
       
-      const dateObj = new Date(t.date);
-      const dateStr = `${dateObj.toLocaleString('default', { month: 'short' })} ${dateObj.getDate()}`;
-      balanceByDate[dateStr] = currentBalance;
-    });
-    
-    chartData = Object.keys(balanceByDate).map(date => ({
-      name: date,
-      balance: balanceByDate[date]
-    }));
-  }
+      sorted.forEach(t => {
+        if (t.type === 'income') currentBalance += t.amount;
+        else currentBalance -= t.amount;
+        
+        const dateObj = new Date(t.date);
+        const dateStr = `${dateObj.toLocaleString('default', { month: 'short' })} ${dateObj.getDate()}`;
+        balanceByDate[dateStr] = currentBalance;
+      });
+      
+      data = Object.keys(balanceByDate).map(date => ({
+        name: date,
+        balance: balanceByDate[date]
+      }));
+    }
+    return data;
+  }, [transactions]);
 
   const timeOptions = [
     { value: 'This Month', label: 'This Month' },
@@ -63,25 +66,31 @@ const BalanceChart = () => {
   };
 
   return (
-    <div className="glass p-6 rounded-2xl h-96 flex flex-col relative">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 relative z-50 w-full">
-        <h3 className="text-lg font-display font-semibold text-text">Balance Trend</h3>
+    <div className="glass p-6 rounded-[2rem] h-96 flex flex-col relative group">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 relative z-50 w-full group-hover:px-1 transition-all">
+        <div className="flex items-center gap-3">
+           <div className="p-2 bg-primary/10 rounded-xl text-primary flex items-center justify-center shadow-lg shadow-primary/5">
+             <i className="pi pi-chart-line text-base"></i>
+           </div>
+           <h3 className="text-base font-display font-bold text-text tracking-tight">Balance Trend</h3>
+        </div>
         
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2 items-center">
           <Dropdown 
             value={chartType} 
             options={chartTypeOptions} 
             onChange={setChartType} 
-            className="w-36 [&_button]:w-full"
+            className="[&_button]:min-w-0 [&_button]:px-3 [&_button]:py-1.5 [&_button]:text-[11px] [&_button]:rounded-full"
           />
           <Dropdown 
             value={timeRange} 
             options={timeOptions} 
             onChange={setTimeRange} 
-            className="w-36 [&_button]:w-full"
+            className="[&_button]:min-w-0 [&_button]:px-3 [&_button]:py-1.5 [&_button]:text-[11px] [&_button]:rounded-full"
           />
         </div>
       </div>
+
       
       <div className="flex-1 w-full min-h-0 relative z-10">
         {chartData.length === 0 ? (

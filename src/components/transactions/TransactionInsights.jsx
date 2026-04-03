@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 const TransactionInsights = ({ transactions }) => {
-  const expenses = transactions.filter(t => t.type === 'expense');
-  const avgExpense = expenses.length > 0 ? Math.round(expenses.reduce((acc, curr) => acc + curr.amount, 0) / expenses.length) : 0;
-  
-  const methodCounts = transactions.reduce((acc, curr) => {
-    acc[curr.paymentMethod] = (acc[curr.paymentMethod] || 0) + 1;
-    return acc;
-  }, {});
-  
-  const topMethod = Object.keys(methodCounts).length > 0 
-    ? Object.keys(methodCounts).reduce((a, b) => methodCounts[a] > methodCounts[b] ? a : b)
-    : 'None';
+  const { avgExpense, topMethod } = useMemo(() => {
+    const expenses = transactions.filter(t => t.type === 'expense');
+    const avg = expenses.length > 0 ? Math.round(expenses.reduce((acc, curr) => acc + curr.amount, 0) / expenses.length) : 0;
+    
+    const methodCounts = transactions.reduce((acc, curr) => {
+      acc[curr.paymentMethod] = (acc[curr.paymentMethod] || 0) + 1;
+      return acc;
+    }, {});
+    
+    const top = Object.keys(methodCounts).length > 0 
+      ? Object.keys(methodCounts).reduce((a, b) => methodCounts[a] > methodCounts[b] ? a : b)
+      : 'None';
+      
+    return { avgExpense: avg, topMethod: top };
+  }, [transactions]);
 
   return (
     <div className="hidden xl:flex w-72 flex-col gap-6 border-l border-border/30 pl-8 overflow-y-auto h-full">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,30 +29,33 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
     setCurrentPage(1);
   }, [filter, searchTerm, sortBy]);
 
-  // Filtering Logic
-  let filteredData = transactions.filter(t => {
-    if (filter !== 'All' && filter.toLowerCase() !== t.type) return false;
-    if (searchTerm && !t.category.toLowerCase().includes(searchTerm.toLowerCase())) return false;
-    return true;
-  });
+  // Filtering & Sorting Logic memoized
+  const allFilteredData = useMemo(() => {
+    let result = transactions.filter(t => {
+      if (filter !== 'All' && filter.toLowerCase() !== t.type) return false;
+      if (searchTerm && !t.category.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+      return true;
+    });
 
-  // Sorting Logic
-  filteredData = filteredData.sort((a, b) => {
-    if (sortBy === 'date-desc') return new Date(b.date) - new Date(a.date);
-    if (sortBy === 'date-asc') return new Date(a.date) - new Date(b.date);
-    if (sortBy === 'amt-desc') return b.amount - a.amount;
-    if (sortBy === 'amt-asc') return a.amount - b.amount;
-    return 0;
-  });
+    return result.sort((a, b) => {
+      if (sortBy === 'date-desc') return new Date(b.date) - new Date(a.date);
+      if (sortBy === 'date-asc') return new Date(a.date) - new Date(b.date);
+      if (sortBy === 'amt-desc') return b.amount - a.amount;
+      if (sortBy === 'amt-asc') return a.amount - b.amount;
+      return 0;
+    });
+  }, [transactions, filter, searchTerm, sortBy]);
 
-  const totalPages = Math.ceil(filteredData.length / pageSize);
+  const totalPages = Math.ceil(allFilteredData.length / pageSize);
 
-  if (limit) {
-    filteredData = filteredData.slice(0, limit);
-  } else {
-    const startIndex = (currentPage - 1) * pageSize;
-    filteredData = filteredData.slice(startIndex, startIndex + pageSize);
-  }
+  const filteredData = useMemo(() => {
+    if (limit) {
+      return allFilteredData.slice(0, limit);
+    } else {
+      const startIndex = (currentPage - 1) * pageSize;
+      return allFilteredData.slice(startIndex, startIndex + pageSize);
+    }
+  }, [allFilteredData, limit, currentPage, pageSize]);
 
 
 
@@ -308,28 +311,28 @@ const TransactionList = ({ showInsights = false, limit = null }) => {
                          {/* Subtle background glow */}
                          <div className={`absolute -right-4 -top-4 w-24 h-24 blur-3xl opacity-10 rounded-full ${t.type === 'income' ? 'bg-success' : 'bg-error'}`}></div>
                          
-                         <div className="flex items-center justify-between mb-4 relative z-10">
-                           <div className="flex items-center gap-4">
-                             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border-2 shadow-lg transition-transform group-hover:scale-110 ${
+                         <div className="flex justify-between items-start mb-4 relative z-10 gap-3">
+                           <div className="flex items-start gap-3 flex-1 min-w-0">
+                             <div className={`shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center border-2 shadow-lg transition-transform group-hover:scale-110 ${
                                t.type === 'income' 
                                ? 'bg-success/15 text-success border-success/30 shadow-success/10' 
                                : 'bg-error/15 text-error border-error/30 shadow-error/10'
                              }`}>
                                <i className={`pi ${t.type === 'income' ? 'pi-arrow-down-left' : 'pi-arrow-up-right'} text-lg`}></i>
                              </div>
-                             <div>
-                               <div className="font-bold text-text text-[15px] leading-tight mb-1">{t.category}</div>
-                               <div className="flex items-center gap-2">
-                                 <span className="text-[10px] text-text-muted font-medium bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-full">{t.date}</span>
-                                 <span className="text-[10px] text-text-muted font-medium bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-full">{t.paymentMethod}</span>
+                             <div className="flex-1 min-w-0">
+                               <div className="font-bold text-text text-[15px] leading-tight mb-2 truncate">{t.category}</div>
+                               <div className="flex flex-wrap items-center gap-1.5">
+                                 <span className="text-[10px] text-text-muted font-medium bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-full whitespace-nowrap">{t.date}</span>
+                                 <span className="text-[10px] text-text-muted font-medium bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-full whitespace-nowrap">{t.paymentMethod}</span>
                                </div>
                              </div>
                            </div>
-                           <div className="flex flex-col items-end">
+                           <div className="flex flex-col items-end shrink-0 pl-2">
                              <div className={`text-right font-display font-bold text-[17px] tracking-tight ${t.type === 'income' ? 'text-success' : 'text-text'}`}>
                                {t.type === 'income' ? '+' : '-'}₹{t.amount.toLocaleString('en-IN')}
                              </div>
-                             <span className={`text-[10px] font-bold mt-1 px-2 py-0.5 rounded-md ${
+                             <span className={`text-[10px] font-bold mt-1 px-2 py-0.5 rounded-md whitespace-nowrap ${
                                (t.status === 'Completed' || !t.status) ? 'bg-success/10 text-success' : 
                                t.status === 'Pending' ? 'bg-warning/10 text-warning' : 
                                'bg-error/10 text-error'

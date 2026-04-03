@@ -36,8 +36,8 @@ const Sidebar = () => {
       animate={isDesktop ? "desktop" : (isSidebarOpen ? "open" : "closed")}
       variants={sidebarVariants}
       transition={{ type: 'spring', stiffness: 400, damping: 40, mass: 0.8 }}
-      className={`w-64 h-screen fixed left-0 top-0 glass flex flex-col z-[50] p-6 lg:translate-x-0 
-        ${isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'}`}
+      style={{ willChange: "transform" }}
+      className={`w-64 h-screen fixed left-0 top-0 glass flex flex-col z-[50] p-6 shadow-2xl lg:shadow-[none]`}
     >
       <div className="flex items-center justify-between gap-3 mb-10">
         <div className="flex items-center gap-3">
