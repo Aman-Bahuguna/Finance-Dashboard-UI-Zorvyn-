@@ -1,6 +1,6 @@
-# ArthSense 💎 - Finance Dashboard UI Implementation
+# ArthSense - Finance Dashboard UI Implementation
 
-## 📖 1. Introduction & Objective
+## 1. Introduction & Objective
 **ArthSense** is a high-fidelity, obsidian-themed finance dashboard built to fulfill the "Finance Dashboard UI" implementation challenge. The primary objective of this project is to demonstrate excellence in:
 - **Clean UI/UX Design**: Modular, readable, and aesthetic obsidian-dark interface.
 - **Component Architecture**: Reusable and scalable frontend structure.
@@ -9,7 +9,7 @@
 
 ---
 
-## 🛠️ 2. Tech Stack Selection
+## 2. Tech Stack Selection
 | Layer | Technology | Rationale |
 | :--- | :--- | :--- |
 | **Framework** | **React 18 (Vite)** | Industry standard for component-based SPAs with lightning-fast development (HMR). |
@@ -21,7 +21,7 @@
 
 ---
 
-## 🚀 3. Core Features
+## 3. Core Features
 
 ### 🔹 Dashboard Overview
 - **Summary Cards**: Displays Total Balance, Income, and Expenses with monthly comparison trend indicators.
@@ -45,7 +45,7 @@
 
 ---
 
-## 📂 4. Project Architecture
+## 4. Project Architecture
 The project follows a **Scalable Modular Structure**, separating concerns into isolated, reusable units:
 
 ```text
@@ -63,7 +63,7 @@ src/
 
 ---
 
-## ⚙️ 5. Setup & Installation
+## 5. Setup & Installation
 
 1. **Clone & Navigate**:
    ```bash
@@ -88,15 +88,15 @@ src/
 
 ---
 
-## 🌟 6. Optional Enhancements (Implemented)
+## 6. Optional Enhancements (Implemented)
 To strengthen the submission, the following advanced features were added:
-- ✅ **Experimental Theme Animations**: Integrated browser **View Transition API** for a cinematic "circular reveal" effect when switching themes.
-- ✅ **Data Persistence**: Full synchronization with **LocalStorage** to keep data consistent across refreshes.
-- ✅ **Export Logic**: One-click **CSV Generation** for financial reports.
-- ✅ **Obsidian Dark Mode**: Custom-crafted, premium dark theme optimized for high-fidelity displays.
-- ✅ **Pagination System**: Built-in paging to optimize dashboard vertical space.
+- **Experimental Theme Animations**: Integrated browser **View Transition API** for a cinematic "circular reveal" effect when switching themes.
+- **Data Persistence**: Full synchronization with **LocalStorage** to keep data consistent across refreshes.
+- **Export Logic**: One-click **CSV Generation** for financial reports.
+- **Obsidian Dark Mode**: Custom-crafted, premium dark theme optimized for high-fidelity displays.
+- **Pagination System**: Built-in paging to optimize dashboard vertical space.
 
 ---
 
-## 📝 7. Conclusion
+## 7. Conclusion
 ArthSense avoids the "messy complexity" pitfall by focusing on high-quality code structure and intuitive design. It demonstrates how a simple project can look premium and feel scalable with the right architectural decisions.
